@@ -1,14 +1,8 @@
 spring:
   application:
     name: message-sender-service
-    version: 0.5
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      initial-size: 5
-      max-active: 50
-      query-timeout: 21600
+    version: 1.0
+
 management:
   endpoints:
     shutdown:

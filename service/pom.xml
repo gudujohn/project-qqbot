@@ -30,11 +30,6 @@
             <artifactId>enhance-microservice</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.enhance</groupId>
-            <artifactId>enhance-mybatis</artifactId>
-            <version>1.0</version>
-        </dependency>
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

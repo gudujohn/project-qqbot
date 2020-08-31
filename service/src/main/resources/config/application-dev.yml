@@ -1,0 +1,8 @@
+swagger:
+  enable: true
+
+message:
+  command: C:/Users/JiangGengchao/Desktop/au3/QQ2020Chart.exe
+
+server:
+  port: 8081
