@@ -1,6 +1,6 @@
 #include <file.au3>
 
-Dim $logFile="sendMessage.log"
+Dim $logFile="qqMessage.log"
 _FileWriteLog($logFile, "==================", -1)
 if 2 > $CmdLine[0] Then
    _FileWriteLog($logFile, $CmdLine[0], -1)
