@@ -9,6 +9,7 @@ swagger:
   enable: true
 
 message:
+  admin: john
   command: D:\work\workspace\mine\qqbot-message-sender\au3-script\QQ2020Chart.exe
 
 server:

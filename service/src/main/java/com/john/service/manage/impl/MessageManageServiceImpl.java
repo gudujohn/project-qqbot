@@ -1,16 +1,22 @@
 package com.john.service.manage.impl;
 
+import com.alibaba.ttl.threadpool.TtlExecutors;
+import com.john.controller.MessageController;
 import com.john.model.Message;
 import com.john.model.constant.StatusEnum;
 import com.john.model.constant.TypeEnum;
 import com.john.service.dao.MessageAccessService;
 import com.john.service.manage.IMessageManageService;
 import lombok.extern.slf4j.Slf4j;
+import org.enhance.common.util.Assertion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * com.john.service.impl-MessageManageServiceImpl
@@ -47,10 +53,31 @@ public class MessageManageServiceImpl implements IMessageManageService {
     }
 
     @Override
-    public synchronized boolean sendMessage(Message message) {
+    @Async("messageThreadPool")
+    public void sendMessage(Message message) {
         String destination = message.getDestination();
         String msg = message.getMessage();
 
+        updateMessage(message, StatusEnum.SENDING);
+
+        boolean result = sendMessageLogic(destination, msg);
+
+        if(result) {
+            updateMessage(message, StatusEnum.SEND_SUCCESS);
+        } else {
+            updateMessage(message, StatusEnum.SEND_FAIL);
+        }
+    }
+
+    @Override
+    @Async("messageThreadPool")
+    public void sendMessage(String destination, String msg) {
+        sendMessageLogic(destination, msg);
+    }
+
+    private boolean sendMessageLogic(String destination, String msg) {
+        Assertion.notEmpty(destination, "destination 不能为空");
+        Assertion.notEmpty(msg, "msg 不能为空");
 
         String[] qqs = destination.split(",");
 

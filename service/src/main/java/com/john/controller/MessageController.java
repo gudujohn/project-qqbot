@@ -42,36 +42,9 @@ public class MessageController {
     public RestResult receiveMessage(@RequestBody MessageParam param) {
         Message message = messageManageService.saveMessage(param.getDestination(), param.getMessage());
 
-        Executor execThreadPool = TtlExecutors.getTtlExecutor(Executors.newFixedThreadPool(1));
-        try {
-            messageManageService.updateMessage(message, StatusEnum.SENDING);
-            execThreadPool.execute(new SendMessageTask(message));
-        }catch (Exception e) {
-            log.error(e.getMessage(), e);
-            messageManageService.updateMessage(message, StatusEnum.NOT_SEND);
-        }
+        messageManageService.sendMessage(message);
 
         return RestResultUtil.success();
     }
 
-    @Setter
-    private class SendMessageTask implements Runnable {
-
-        private Message message;
-
-        public SendMessageTask(Message message) {
-            this.message = message;
-        }
-
-        @Override
-        public void run() {
-            try {
-                messageManageService.sendMessage(message);
-                messageManageService.updateMessage(message, StatusEnum.SEND_SUCCESS);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                messageManageService.updateMessage(message, StatusEnum.SEND_FAIL);
-            }
-        }
-    }
 }

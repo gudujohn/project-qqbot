@@ -14,6 +14,7 @@ import com.john.model.constant.StatusEnum;
  **/
 public interface IMessageManageService {
     Message saveMessage(String destination, String message);
-    boolean sendMessage(Message message);
+    void sendMessage(Message message);
+    void sendMessage(String destination, String msg);
     void updateMessage(Message message, StatusEnum status);
 }
